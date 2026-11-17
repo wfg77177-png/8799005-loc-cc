@@ -1,1 +1,52 @@
-aW1wb3J0IFN3aWZ0VUkKaW1wb3J0IFdlYktpdAoKc3RydWN0IENvbnRlbnRWaWV3OiBWaWV3IHsKICAgIHZhciBib2R5OiBzb21lIFZpZXcgewogICAgICAgIFdlYlZpZXcoKQogICAgICAgICAgICAuaWdub3Jlc1NhZmVBcmVhKCkKICAgIH0KfQoKc3RydWN0IFdlYlZpZXc6IFVJVmlld1JlcHJlc2VudGFibGUgewogICAgLy8g5YWI6LWwIGh0dHBz77yb6K+B5Lmm6L+Y5rKh5LiL5p2l5pe2IGh0dHBzIOS8muWksei0pe+8jOiHquWKqOmAgOWbniBodHRwCiAgICBwcml2YXRlIHN0YXRpYyBsZXQgaHR0cHNVUkwgPSBVUkwoc3RyaW5nOiAiaHR0cHM6Ly84Nzk5MDA1LmxvYy5jYy8iKSEKICAgIHByaXZhdGUgc3RhdGljIGxldCBodHRwVVJMID0gVVJMKHN0cmluZzogImh0dHA6Ly84Nzk5MDA1LmxvYy5jYy8iKSEKCiAgICBmdW5jIG1ha2VDb29yZGluYXRvcigpIC0+IENvb3JkaW5hdG9yIHsKICAgICAgICBDb29yZGluYXRvcigpCiAgICB9CgogICAgZnVuYyBtYWtlVUlWaWV3KGNvbnRleHQ6IENvbnRleHQpIC0+IFdLV2ViVmlldyB7CiAgICAgICAgbGV0IGNvbmZpZyA9IFdLV2ViVmlld0NvbmZpZ3VyYXRpb24oKQogICAgICAgIGNvbmZpZy5hbGxvd3NJbmxpbmVNZWRpYVBsYXliYWNrID0gdHJ1ZQogICAgICAgIGNvbmZpZy5tZWRpYVR5cGVzUmVxdWlyaW5nVXNlckFjdGlvbkZvclBsYXliYWNrID0gW10KICAgICAgICBsZXQgd2ViVmlldyA9IFdLV2ViVmlldyhmcmFtZTogLnplcm8sIGNvbmZpZ3VyYXRpb246IGNvbmZpZykKICAgICAgICB3ZWJWaWV3Lm5hdmlnYXRpb25EZWxlZ2F0ZSA9IGNvbnRleHQuY29vcmRpbmF0b3IKICAgICAgICB3ZWJWaWV3LmFsbG93c0JhY2tGb3J3YXJkTmF2aWdhdGlvbkdlc3R1cmVzID0gdHJ1ZQogICAgICAgIHdlYlZpZXcuc2Nyb2xsVmlldy5ib3VuY2VzID0gdHJ1ZQogICAgICAgIHdlYlZpZXcubG9hZChVUkxSZXF1ZXN0KHVybDogU2VsZi5odHRwc1VSTCkpCiAgICAgICAgcmV0dXJuIHdlYlZpZXcKICAgIH0KCiAgICBmdW5jIHVwZGF0ZVVJVmlldyhfIHdlYlZpZXc6IFdLV2ViVmlldywgY29udGV4dDogQ29udGV4dCkge30KCiAgICBjbGFzcyBDb29yZGluYXRvcjogTlNPYmplY3QsIFdLTmF2aWdhdGlvbkRlbGVnYXRlIHsKICAgICAgICBwcml2YXRlIHZhciB0cmllZEh0dHBGYWxsYmFjayA9IGZhbHNlCgogICAgICAgIGZ1bmMgd2ViVmlldyhfIHdlYlZpZXc6IFdLV2ViVmlldywgZGlkRmFpbFByb3Zpc2lvbmFsTmF2aWdhdGlvbiBuYXZpZ2F0aW9uOiBXS05hdmlnYXRpb24hLCB3aXRoRXJyb3IgZXJyb3I6IEVycm9yKSB7CiAgICAgICAgICAgIC8vIGh0dHBzIOWksei0pe+8iOivgeS5puacquWwsee7quetie+8ieaXtumAgOWbniBodHRwIOWGjeivleS4gOasoQogICAgICAgICAgICBpZiAhdHJpZWRIdHRwRmFsbGJhY2sgewogICAgICAgICAgICAgICAgdHJpZWRIdHRwRmFsbGJhY2sgPSB0cnVlCiAgICAgICAgICAgICAgICB3ZWJWaWV3LmxvYWQoVVJMUmVxdWVzdCh1cmw6IFdlYlZpZXcuaHR0cFVSTCkpCiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIGZ1bmMgd2ViVmlldyhfIHdlYlZpZXc6IFdLV2ViVmlldywgZGlkRmFpbCBuYXZpZ2F0aW9uOiBXS05hdmlnYXRpb24hLCB3aXRoRXJyb3IgZXJyb3I6IEVycm9yKSB7CiAgICAgICAgICAgIGlmICF0cmllZEh0dHBGYWxsYmFjayB7CiAgICAgICAgICAgICAgICB0cmllZEh0dHBGYWxsYmFjayA9IHRydWUKICAgICAgICAgICAgICAgIHdlYlZpZXcubG9hZChVUkxSZXF1ZXN0KHVybDogV2ViVmlldy5odHRwVVJMKSkKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQo=
+import SwiftUI
+import WebKit
+
+struct ContentView: View {
+    var body: some View {
+        WebView()
+            .ignoresSafeArea()
+    }
+}
+
+struct WebView: UIViewRepresentable {
+    // 先走 https；证书还没下来时 https 会失败，自动退回 http
+    private static let httpsURL = URL(string: "https://8799005.loc.cc/")!
+    private static let httpURL = URL(string: "http://8799005.loc.cc/")!
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+
+    func makeUIView(context: Context) -> WKWebView {
+        let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        config.mediaTypesRequiringUserActionForPlayback = []
+        let webView = WKWebView(frame: .zero, configuration: config)
+        webView.navigationDelegate = context.coordinator
+        webView.allowsBackForwardNavigationGestures = true
+        webView.scrollView.bounces = true
+        webView.load(URLRequest(url: Self.httpsURL))
+        return webView
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {}
+
+    class Coordinator: NSObject, WKNavigationDelegate {
+        private var triedHttpFallback = false
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            // https 失败（证书未就绪等）时退回 http 再试一次
+            if !triedHttpFallback {
+                triedHttpFallback = true
+                webView.load(URLRequest(url: WebView.httpURL))
+            }
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            if !triedHttpFallback {
+                triedHttpFallback = true
+                webView.load(URLRequest(url: WebView.httpURL))
+            }
+        }
+    }
+}
