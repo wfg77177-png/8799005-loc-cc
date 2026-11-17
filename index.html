@@ -2,19 +2,652 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8799005.loc.cc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>双语翻译</title>
+<meta name="description" content="双语对照翻译：粘贴文字或网址，原文译文逐段对照。不用登录，没有广告。">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="双语翻译">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
-  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f7f7f5; color: #222; }
-  main { text-align: center; padding: 2rem; }
-  h1 { font-size: 1.6rem; font-weight: 600; margin: 0 0 .5rem; }
-  p { margin: 0; color: #666; }
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --brand:#0f172a; --accent:#2563eb; --accent-soft:#dbeafe; --ok:#16a34a; --warn:#b45309; --err:#dc2626;
+    --trans:#1d4ed8; --radius:14px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px; line-height:1.6;}
+  body{padding-bottom:calc(28px + env(safe-area-inset-bottom));}
+  header{position:sticky; top:0; z-index:20; background:rgba(246,247,249,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);}
+  .wrap{max-width:760px; margin:0 auto; padding:0 14px;}
+  .bar{display:flex; align-items:center; gap:10px; padding:12px 0;}
+  .logo{width:36px;height:36px;border-radius:10px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex:none;}
+  .title{font-size:19px;font-weight:800;letter-spacing:.5px;}
+  .subtitle{font-size:12px;color:var(--muted);margin-top:-3px;}
+  .spacer{flex:1;}
+  .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);background:#fff;
+    border-radius:999px;padding:4px 10px;white-space:nowrap;}
+  main{padding:14px 0 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px;margin-bottom:12px;}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .row + .row{margin-top:10px;}
+  label{font-size:13px;color:var(--muted);}
+  select, input[type="text"], input[type="url"], textarea{
+    font:inherit; color:var(--ink); background:#fff; border:1px solid var(--line);
+    border-radius:10px; padding:10px 12px; width:100%; outline:none;}
+  select:focus, input:focus, textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+  select{width:auto; flex:1; min-width:0;}
+  textarea{min-height:150px; resize:vertical; line-height:1.7;}
+  .seg{display:flex; background:#eef2f7; border-radius:999px; padding:3px; gap:2px;}
+  .seg button{flex:1; border:0; background:transparent; font:inherit; font-size:14px; font-weight:600;
+    color:var(--muted); padding:8px 10px; border-radius:999px; cursor:pointer; white-space:nowrap;}
+  .seg button.on{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(15,23,42,.15);}
+  .btn{border:0; border-radius:12px; font:inherit; font-weight:700; cursor:pointer;
+    padding:12px 18px; background:var(--brand); color:#fff; width:100%; font-size:16px;}
+  .btn:active{transform:scale(.99);}
+  .btn:disabled{opacity:.55; cursor:wait;}
+  .btn.ghost{background:#fff; color:var(--ink); border:1px solid var(--line); font-weight:600; width:auto; padding:9px 14px; font-size:14px;}
+  .btn.small{width:auto; padding:8px 12px; font-size:14px; font-weight:600;}
+  .hint{font-size:13px;color:var(--muted);}
+  .hint b{color:var(--ink);}
+  .status{font-size:13px; padding:9px 12px; border-radius:10px; display:none; margin-top:10px;}
+  .status.show{display:block;}
+  .status.info{background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;}
+  .status.ok{background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0;}
+  .status.warn{background:#fffbeb; color:#92400e; border:1px solid #fde68a;}
+  .status.err{background:#fef2f2; color:#b91c1c; border:1px solid #fecaca;}
+  .result-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
+  .result-head .t{font-weight:800; font-size:16px;}
+  .result-head .n{font-size:12px; color:var(--muted);}
+  .para{border-top:1px solid var(--line); padding:12px 0;}
+  .para:first-of-type{border-top:0;}
+  .orig{font-size:16px; line-height:1.75;}
+  .tran{font-size:16px; line-height:1.75; color:var(--trans); margin-top:6px;}
+  .tran .pending{color:var(--muted); font-size:14px;}
+  .para.hide-orig .orig{display:none;}
+  .para.hide-tran .tran{display:none;}
+  .para .jump{font-size:12px; color:var(--muted); margin-top:6px;}
+  .para .jump button{border:0; background:none; color:var(--accent); font:inherit; font-size:12px; padding:0; cursor:pointer;}
+  .empty{color:var(--muted); font-size:14px; text-align:center; padding:18px 0 8px;}
+  .hist-item{display:flex; gap:8px; align-items:center; padding:10px 2px; border-top:1px solid var(--line); cursor:pointer;}
+  .hist-item:first-of-type{border-top:0;}
+  .hist-item .txt{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px;}
+  .hist-item .meta{font-size:12px; color:var(--muted); white-space:nowrap;}
+  .hist-item .del{border:0; background:none; color:var(--muted); font-size:16px; cursor:pointer; padding:4px;}
+  details{font-size:14px;}
+  details summary{cursor:pointer; font-weight:700; padding:4px 0;}
+  details .body{color:var(--muted); font-size:13px; line-height:1.7; margin-top:6px;}
+  details .body input{margin-top:6px; font-size:14px;}
+  details .body .row{margin-top:8px;}
+  .foot{font-size:12px; color:var(--muted); text-align:center; padding:18px 0 6px; line-height:1.8;}
+  .foot a{color:var(--muted);}
+  @media (max-width:480px){
+    .title{font-size:17px;}
+    textarea{min-height:130px;}
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>8799005.loc.cc</h1>
-  <p>你好，这里是我的小站。</p>
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <div class="logo">译</div>
+      <div>
+        <div class="title">双语翻译</div>
+        <div class="subtitle">原文译文，逐段对照</div>
+      </div>
+      <div class="spacer"></div>
+      <span class="pill" id="enginePill">引擎：自动</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 语言 -->
+  <div class="card">
+    <div class="row">
+      <label for="srcLang">从</label>
+      <select id="srcLang">
+        <option value="auto" selected>自动检测</option>
+        <option value="en">英语</option>
+        <option value="zh-CN">中文</option>
+        <option value="ja">日语</option>
+        <option value="ko">韩语</option>
+        <option value="fr">法语</option>
+        <option value="de">德语</option>
+        <option value="es">西班牙语</option>
+        <option value="ru">俄语</option>
+        <option value="pt">葡萄牙语</option>
+        <option value="it">意大利语</option>
+        <option value="ar">阿拉伯语</option>
+      </select>
+      <span style="color:var(--muted)">→</span>
+      <label for="tgtLang">到</label>
+      <select id="tgtLang">
+        <option value="zh-CN" selected>中文</option>
+        <option value="en">英语</option>
+        <option value="ja">日语</option>
+        <option value="ko">韩语</option>
+        <option value="fr">法语</option>
+        <option value="de">德语</option>
+        <option value="es">西班牙语</option>
+        <option value="ru">俄语</option>
+        <option value="pt">葡萄牙语</option>
+        <option value="it">意大利语</option>
+        <option value="ar">阿拉伯语</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="seg" style="flex:1" id="modeSeg">
+        <button data-mode="text" class="on">粘贴文字</button>
+        <button data-mode="url">粘贴网址</button>
+      </div>
+    </div>
+    <div class="row" id="textBox">
+      <textarea id="inputText" placeholder="把要翻译的文字粘贴到这里……&#10;&#10;支持英文、日文、韩文等翻成中文，也支持中文翻成外文。段落会逐段翻译，翻一段出一段。"></textarea>
+    </div>
+    <div class="row" id="urlBox" style="display:none">
+      <input type="url" id="inputUrl" placeholder="https://…… 粘贴一篇文章的网址">
+    </div>
+    <div class="row">
+      <button class="btn" id="goBtn">翻译</button>
+    </div>
+    <div class="status" id="status"></div>
+    <div class="row" style="margin-top:10px">
+      <span class="hint">不用登录，没有广告。翻译在你的手机上直接调用免费接口完成，原文不会上传到任何服务器。</span>
+    </div>
+  </div>
+
+  <!-- 结果 -->
+  <div class="card" id="resultCard" style="display:none">
+    <div class="result-head">
+      <span class="t">翻译结果</span>
+      <span class="n" id="resultMeta"></span>
+      <span class="spacer" style="flex:1"></span>
+      <div class="seg" id="viewSeg" style="width:210px">
+        <button data-view="both" class="on">双语</button>
+        <button data-view="tran">仅译文</button>
+        <button data-view="orig">仅原文</button>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <button class="btn ghost small" id="copyTran">复制译文</button>
+      <button class="btn ghost small" id="copyBoth">复制双语</button>
+      <button class="btn ghost small" id="clearBtn">清空</button>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <!-- 历史 -->
+  <div class="card" id="histCard" style="display:none">
+    <div class="result-head"><span class="t">最近翻译</span><span class="n">只存在这台手机上</span></div>
+    <div id="histList"></div>
+  </div>
+
+  <!-- 设置 -->
+  <div class="card">
+    <details id="settings">
+      <summary>设置：翻译引擎 / 自带 Key</summary>
+      <div class="body">
+        <div>默认走免费路线，不用填任何东西：先试谷歌翻译，谷歌不通自动切 MyMemory。想用 AI 翻译（质量更好），可以在下面填自己的 Key，存在这台手机上，不会发给别人。</div>
+        <div class="row">
+          <label for="engineSel">引擎</label>
+          <select id="engineSel">
+            <option value="auto" selected>自动（谷歌 → MyMemory）</option>
+            <option value="google">只用谷歌</option>
+            <option value="mymemory">只用 MyMemory</option>
+            <option value="byok">只用自带 Key（AI）</option>
+          </select>
+        </div>
+        <div class="row"><input type="text" id="byokBase" placeholder="AI 接口地址（可选），如 https://openrouter.ai/api/v1"></div>
+        <div class="row"><input type="text" id="byokKey" placeholder="API Key（可选），只存本地"></div>
+        <div class="row"><input type="text" id="byokModel" placeholder="模型（可选），如 deepseek/deepseek-chat"></div>
+        <div class="row">
+          <button class="btn ghost small" id="saveSettings">保存设置</button>
+          <button class="btn ghost small" id="clearSettings">清除 Key</button>
+          <span class="hint" id="settingsMsg"></span>
+        </div>
+        <div class="row"><span class="hint">免费额度说明：MyMemory 匿名每天约 5000 字符，填邮箱可提到 5 万。谷歌免费接口没有公开额度，但机房 IP 常被限流，手机家宽一般能用。</span></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="foot">
+    双语翻译 · 比沉浸式翻译更轻：不登录、不弹窗、不收钱<br>
+    译文仅供参考，重要内容请以原文为准
+  </div>
 </main>
+
+<script>
+"use strict";
+/* ============ 小工具 ============ */
+const $ = (id) => document.getElementById(id);
+const statusEl = $("status");
+function showStatus(msg, kind){
+  statusEl.textContent = msg;
+  statusEl.className = "status show " + (kind || "info");
+}
+function hideStatus(){ statusEl.className = "status"; statusEl.textContent = ""; }
+function esc(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function detectLang(text){
+  const cn = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const total = text.replace(/\s/g,"").length || 1;
+  return (cn / total > 0.3) ? "zh-CN" : "en";
+}
+function splitParagraphs(text){
+  return text.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean)
+    .flatMap(p => p.split(/\n/).map(s => s.trim()).filter(Boolean));
+}
+
+/* ============ 设置（localStorage，只存本地） ============ */
+const LS_KEY = "shuangyu-settings-v1";
+const LS_HIST = "shuangyu-history-v1";
+function loadSettings(){
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch(e){ return {}; }
+}
+function saveSettingsObj(o){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(o)); } catch(e){}
+}
+const settings = loadSettings();
+$("engineSel").value = settings.engine || "auto";
+$("byokBase").value = settings.byokBase || "";
+$("byokKey").value = settings.byokKey || "";
+$("byokModel").value = settings.byokModel || "";
+function refreshEnginePill(){
+  const e = $("engineSel").value;
+  $("enginePill").textContent = "引擎：" + (
+    e === "auto" ? "自动" : e === "google" ? "谷歌" : e === "mymemory" ? "MyMemory" : "自带 Key");
+}
+refreshEnginePill();
+$("saveSettings").addEventListener("click", () => {
+  const o = {
+    engine: $("engineSel").value,
+    byokBase: $("byokBase").value.trim(),
+    byokKey: $("byokKey").value.trim(),
+    byokModel: $("byokModel").value.trim(),
+  };
+  saveSettingsObj(o);
+  Object.assign(settings, o);
+  refreshEnginePill();
+  $("settingsMsg").textContent = "已保存到这台手机。";
+  setTimeout(() => { $("settingsMsg").textContent = ""; }, 2500);
+});
+$("clearSettings").addEventListener("click", () => {
+  $("byokBase").value = ""; $("byokKey").value = ""; $("byokModel").value = "";
+  const o = { engine: $("engineSel").value, byokBase: "", byokKey: "", byokModel: "" };
+  saveSettingsObj(o);
+  Object.assign(settings, o);
+  $("settingsMsg").textContent = "Key 已清除。";
+  setTimeout(() => { $("settingsMsg").textContent = ""; }, 2500);
+});
+
+/* ============ 翻译引擎 ============ */
+async function fetchWithTimeout(url, opts, ms){
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), ms || 15000);
+  try { return await fetch(url, Object.assign({ signal: c.signal }, opts || {})); }
+  finally { clearTimeout(t); }
+}
+
+/* 谷歌非官方端点（免费，不用 Key） */
+async function translateGoogle(text, sl, tl){
+  const url = "https://translate.googleapis.com/translate_a/single?client=gtx"
+    + "&sl=" + encodeURIComponent(sl) + "&tl=" + encodeURIComponent(tl)
+    + "&dt=t&q=" + encodeURIComponent(text);
+  const r = await fetchWithTimeout(url, {}, 15000);
+  if (!r.ok) throw new Error("google http " + r.status);
+  const data = await r.json();
+  if (!data || !data[0]) throw new Error("google bad response");
+  const out = data[0].map(seg => seg[0]).join("");
+  if (!out || !out.trim()) throw new Error("google empty");
+  if (out.trim() === text.trim()) throw new Error("google unchanged");
+  return out;
+}
+
+/* MyMemory（免费，不用 Key；匿名每天约 5000 字符） */
+async function translateMyMemory(text, sl, tl){
+  const pair = (sl === "auto" ? "en" : sl.split("-")[0]) + "|" + tl.split("-")[0];
+  const url = "https://api.mymemory.translated.net/get?q=" + encodeURIComponent(text)
+    + "&langpair=" + encodeURIComponent(pair);
+  const r = await fetchWithTimeout(url, {}, 15000);
+  if (!r.ok) throw new Error("mymemory http " + r.status);
+  const data = await r.json();
+  const out = data && data.responseData && data.responseData.translatedText;
+  if (!out || !out.trim()) throw new Error("mymemory empty");
+  if (/MYMEMORY WARNING/i.test(out)) throw new Error("mymemory quota");
+  if (out.trim() === text.trim()) throw new Error("mymemory unchanged");
+  return out;
+}
+
+/* 自带 Key：OpenAI 兼容接口（OpenRouter / DeepSeek / AMD Token Lab 等） */
+async function translateByok(text, sl, tl){
+  const base = (settings.byokBase || "https://openrouter.ai/api/v1").replace(/\/+$/, "");
+  const key = settings.byokKey;
+  const model = settings.byokModel || "deepseek/deepseek-chat";
+  if (!key) throw new Error("no byok key");
+  const targetName = { "zh-CN": "简体中文", "en": "英语", "ja": "日语", "ko": "韩语",
+    "fr": "法语", "de": "德语", "es": "西班牙语", "ru": "俄语", "pt": "葡萄牙语",
+    "it": "意大利语", "ar": "阿拉伯语" }[tl] || tl;
+  const r = await fetchWithTimeout(base + "/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        { role: "system", content: "你是一个专业翻译。只输出译文，不要解释，不要加引号。把用户给出的文本翻译成" + targetName + "，保持段落结构，专有名词、数字、链接不要改。" },
+        { role: "user", content: text }
+      ],
+      temperature: 0.2
+    })
+  }, 30000);
+  if (!r.ok) throw new Error("byok http " + r.status);
+  const data = await r.json();
+  const out = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  if (!out || !out.trim()) throw new Error("byok empty");
+  return out.trim();
+}
+
+/* 按引擎设置依次尝试，返回 { text, engine } */
+async function translateOne(text, sl, tl){
+  const pref = $("engineSel").value || settings.engine || "auto";
+  const order = [];
+  if (pref === "google") order.push(["google", translateGoogle]);
+  else if (pref === "mymemory") order.push(["mymemory", translateMyMemory]);
+  else if (pref === "byok") order.push(["byok", translateByok]);
+  else {
+    if (settings.byokKey) order.push(["byok", translateByok]);
+    order.push(["google", translateGoogle]);
+    order.push(["mymemory", translateMyMemory]);
+  }
+  let lastErr = null;
+  for (const [name, fn] of order){
+    try {
+      const out = await fn(text, sl, tl);
+      return { text: out, engine: name };
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error("all engines failed");
+}
+
+/* ============ 网址抓取（经公开 CORS 代理，逐个尝试） ============ */
+const PROXIES = [
+  (u) => "https://api.allorigins.win/raw?url=" + encodeURIComponent(u),
+  (u) => "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(u),
+  (u) => "https://api.allorigins.win/get?url=" + encodeURIComponent(u),
+];
+function extractText(html){
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  doc.querySelectorAll("script,style,noscript,nav,header,footer,aside,form,iframe,svg").forEach(n => n.remove());
+  const blocks = [];
+  const pick = (sel) => Array.from(doc.querySelectorAll(sel));
+  let nodes = pick("article p, main p, .content p, .post p, .article p");
+  if (nodes.length < 3) nodes = pick("p");
+  if (nodes.length < 3) nodes = pick("h1,h2,h3,p,li");
+  nodes.forEach(n => {
+    const t = (n.textContent || "").replace(/\s+/g, " ").trim();
+    if (t.length > 20) blocks.push(t);
+  });
+  const seen = new Set(); const out = [];
+  for (const b of blocks){ if (!seen.has(b)){ seen.add(b); out.push(b); } }
+  const title = (doc.querySelector("title") || {}).textContent || "";
+  return { title: title.trim(), paragraphs: out };
+}
+async function fetchPageText(url){
+  let lastErr = null;
+  for (const mk of PROXIES){
+    try {
+      const r = await fetchWithTimeout(mk(url), {}, 20000);
+      if (!r.ok) throw new Error("proxy http " + r.status);
+      let html = "";
+      const ct = (r.headers.get("content-type") || "").toLowerCase();
+      if (ct.includes("application/json")){
+        const j = await r.json();
+        html = j.contents || "";
+        if (!html) throw new Error("proxy empty json");
+      } else {
+        html = await r.text();
+      }
+      if (!html || html.length < 500) throw new Error("proxy empty");
+      if (/error code: 522/i.test(html)) throw new Error("proxy 522");
+      const got = extractText(html);
+      if (got.paragraphs.length < 2) throw new Error("no readable text");
+      return got;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error("fetch failed");
+}
+
+/* ============ 界面逻辑 ============ */
+let mode = "text";
+$("modeSeg").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  mode = b.dataset.mode;
+  document.querySelectorAll("#modeSeg button").forEach(x => x.classList.toggle("on", x === b));
+  $("textBox").style.display = mode === "text" ? "" : "none";
+  $("urlBox").style.display = mode === "url" ? "" : "none";
+  $("goBtn").textContent = mode === "text" ? "翻译" : "抓取并翻译";
+});
+let view = "both";
+$("viewSeg").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  view = b.dataset.view;
+  document.querySelectorAll("#viewSeg button").forEach(x => x.classList.toggle("on", x === b));
+  applyView();
+});
+function applyView(){
+  document.querySelectorAll("#result .para").forEach(p => {
+    p.classList.toggle("hide-orig", view === "tran");
+    p.classList.toggle("hide-tran", view === "orig");
+  });
+}
+
+let currentParas = [];
+let currentTitle = "";
+let currentEngine = "";
+
+function renderResults(){
+  const box = $("result");
+  box.innerHTML = "";
+  currentParas.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "para";
+    div.id = "para-" + i;
+    const o = document.createElement("div");
+    o.className = "orig";
+    o.textContent = p.orig;
+    const t = document.createElement("div");
+    t.className = "tran";
+    if (p.tran) t.textContent = p.tran;
+    else t.innerHTML = '<span class="pending">翻译中……</span>';
+    const j = document.createElement("div");
+    j.className = "jump";
+    const btn = document.createElement("button");
+    btn.textContent = "回原文 ↑";
+    btn.addEventListener("click", () => {
+      document.querySelector("#resultCard").scrollIntoView({ behavior: "smooth" });
+      div.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    j.appendChild(btn);
+    div.appendChild(o); div.appendChild(t); div.appendChild(j);
+    box.appendChild(div);
+  });
+  applyView();
+}
+
+async function runTranslation(){
+  const slSel = $("srcLang").value;
+  const tl = $("tgtLang").value;
+  let paras = [];
+  let title = "";
+  if (mode === "text"){
+    const raw = $("inputText").value.trim();
+    if (!raw){ showStatus("先粘贴要翻译的文字。", "warn"); return; }
+    paras = splitParagraphs(raw);
+  } else {
+    let url = $("inputUrl").value.trim();
+    if (!url){ showStatus("先粘贴一个网址。", "warn"); return; }
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    showStatus("正在抓取网页……", "info");
+    $("goBtn").disabled = true;
+    try {
+      const got = await fetchPageText(url);
+      title = got.title;
+      paras = got.paragraphs;
+      showStatus("抓到 " + paras.length + " 段，开始翻译……", "info");
+    } catch (e) {
+      $("goBtn").disabled = false;
+      showStatus("这个网址抓不到正文（对方网站拦了抓取）。把文章文字复制出来，用「粘贴文字」翻，一样能用。", "err");
+      return;
+    }
+  }
+  if (!paras.length){ showStatus("没有可翻译的内容。", "warn"); $("goBtn").disabled = false; return; }
+
+  const sl = slSel === "auto" ? detectLang(paras.join("\n")) : slSel;
+  if (sl.split("-")[0] === tl.split("-")[0]){
+    showStatus("原文和目标语言一样，不用翻。换一下目标语言。", "warn");
+    $("goBtn").disabled = false; return;
+  }
+
+  currentParas = paras.map(p => ({ orig: p, tran: "" }));
+  currentTitle = title;
+  currentEngine = "";
+  $("resultCard").style.display = "";
+  $("resultMeta").textContent = "共 " + paras.length + " 段" + (title ? " · " + title.slice(0, 24) : "");
+  renderResults();
+  $("resultCard").scrollIntoView({ behavior: "smooth" });
+  $("goBtn").disabled = true;
+
+  let done = 0, failed = 0, usedEngine = "";
+  const CONC = 3;
+  let idx = 0;
+  async function worker(){
+    while (idx < currentParas.length){
+      const i = idx++;
+      try {
+        const r = await translateOne(currentParas[i].orig, sl, tl);
+        currentParas[i].tran = r.text;
+        usedEngine = r.engine;
+        done++;
+      } catch (e) {
+        currentParas[i].tran = "（这段没翻出来，换个引擎或稍后再试）";
+        failed++;
+      }
+      renderResults();
+      const el = $("para-" + i);
+      if (el) el.querySelector(".tran").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      showStatus("已翻 " + (done + failed) + " / " + currentParas.length + " 段"
+        + (failed ? "（" + failed + " 段失败）" : ""), "info");
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(CONC, currentParas.length) }, worker));
+  $("goBtn").disabled = false;
+  currentEngine = usedEngine;
+  const engineName = { google: "谷歌", mymemory: "MyMemory", byok: "自带 Key" }[usedEngine] || "";
+  if (failed === 0) showStatus("翻完了，共 " + done + " 段" + (engineName ? "，引擎：" + engineName : "") + "。", "ok");
+  else showStatus("翻完了，" + failed + " 段没翻出来，可以点「翻译」再试一次。", "warn");
+  saveHistory();
+}
+$("goBtn").addEventListener("click", runTranslation);
+
+$("copyTran").addEventListener("click", async () => {
+  const txt = currentParas.map(p => p.tran || "").join("\n\n");
+  await copyText(txt, "译文已复制。");
+});
+$("copyBoth").addEventListener("click", async () => {
+  const txt = currentParas.map(p => p.orig + "\n" + (p.tran || "")).join("\n\n");
+  await copyText(txt, "双语已复制。");
+});
+async function copyText(txt, okMsg){
+  if (!txt.trim()){ showStatus("还没有翻译结果。", "warn"); return; }
+  try { await navigator.clipboard.writeText(txt); showStatus(okMsg, "ok"); }
+  catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); showStatus(okMsg, "ok"); }
+    catch (e2) { showStatus("复制失败，请长按选中手动复制。", "err"); }
+    document.body.removeChild(ta);
+  }
+}
+$("clearBtn").addEventListener("click", () => {
+  currentParas = [];
+  $("result").innerHTML = "";
+  $("resultCard").style.display = "none";
+  hideStatus();
+});
+
+/* ============ 历史（只存本地） ============ */
+function loadHistory(){
+  try { return JSON.parse(localStorage.getItem(LS_HIST) || "[]"); } catch(e){ return []; }
+}
+function saveHistory(){
+  if (!currentParas.length) return;
+  const h = loadHistory();
+  const first = currentParas[0].orig.slice(0, 40);
+  const item = { t: Date.now(), title: currentTitle || first,
+    src: currentParas.map(p => p.orig).join("\n\n").slice(0, 4000),
+    tl: $("tgtLang").value };
+  const dup = h.findIndex(x => x.src === item.src);
+  if (dup >= 0) h.splice(dup, 1);
+  h.unshift(item);
+  try { localStorage.setItem(LS_HIST, JSON.stringify(h.slice(0, 10))); } catch(e){}
+  renderHistory();
+}
+function renderHistory(){
+  const h = loadHistory();
+  const card = $("histCard"), list = $("histList");
+  if (!h.length){ card.style.display = "none"; return; }
+  card.style.display = "";
+  list.innerHTML = "";
+  h.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "hist-item";
+    const txt = document.createElement("span");
+    txt.className = "txt";
+    txt.textContent = item.title;
+    const meta = document.createElement("span");
+    meta.className = "meta";
+    meta.textContent = new Date(item.t).toLocaleDateString();
+    const del = document.createElement("button");
+    del.className = "del"; del.textContent = "×";
+    del.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      const hh = loadHistory(); hh.splice(i, 1);
+      try { localStorage.setItem(LS_HIST, JSON.stringify(hh)); } catch(e){}
+      renderHistory();
+    });
+    div.appendChild(txt); div.appendChild(meta); div.appendChild(del);
+    div.addEventListener("click", () => {
+      mode = "text";
+      document.querySelectorAll("#modeSeg button").forEach(x => x.classList.toggle("on", x.dataset.mode === "text"));
+      $("textBox").style.display = ""; $("urlBox").style.display = "none";
+      $("goBtn").textContent = "翻译";
+      $("inputText").value = item.src;
+      $("tgtLang").value = item.tl || "zh-CN";
+      runTranslation();
+    });
+    list.appendChild(div);
+  });
+}
+renderHistory();
+
+/* ============ PWA：Service Worker（HTTPS 下才生效） ============ */
+if ("serviceWorker" in navigator && location.protocol === "https:"){
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
 </body>
 </html>
