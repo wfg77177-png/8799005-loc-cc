@@ -1,1 +1,10 @@
-aW1wb3J0IFN3aWZ0VUkKCkBtYWluCnN0cnVjdCBTaHVhbmd5dUFwcDogQXBwIHsKICAgIHZhciBib2R5OiBzb21lIFNjZW5lIHsKICAgICAgICBXaW5kb3dHcm91cCB7CiAgICAgICAgICAgIENvbnRlbnRWaWV3KCkKICAgICAgICB9CiAgICB9Cn0K
+import SwiftUI
+
+@main
+struct ShuangyuApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
