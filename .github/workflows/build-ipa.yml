@@ -1,0 +1,53 @@
+name: Build IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate app icons
+        working-directory: ios
+        run: |
+          pip3 install --quiet Pillow
+          python3 generate_icons.py
+
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Build unsigned app
+        working-directory: ios
+        run: |
+          xcodebuild -project Shuangyu.xcodeproj \
+            -scheme Shuangyu \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Package IPA
+        working-directory: ios
+        run: |
+          mkdir -p Payload
+          cp -r "build/Build/Products/Release-iphoneos/Shuangyu.app" Payload/
+          zip -r Shuangyu.ipa Payload
+          ls -lh Shuangyu.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shuangyu-ipa
+          path: ios/Shuangyu.ipa
+          if-no-files-found: error
